@@ -1,0 +1,8 @@
+*.pyc
+*.aux
+*.log
+pgdata
+myenv
+__pycache__
+.DS_Store
+local_settings.py
