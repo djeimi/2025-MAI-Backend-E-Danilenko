@@ -1,0 +1,21 @@
+(myenv) danilenko_e@LAPTOP-MVC9TPM6:~/2025-MAI-Backend-E-Danilenko/wrk$ ./wrk -t12 -c400 -d30s http://127.0.0.1
+Running 30s test @ http://127.0.0.1
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    12.45ms    2.27ms  28.84ms   70.66%
+    Req/Sec     2.66k   484.51    10.99k    76.16%
+  954440 requests in 30.03s, 155.64MB read
+Requests/sec:  31778.01
+Transfer/sec:      5.18MB
+
+(myenv) danilenko_e@LAPTOP-MVC9TPM6:~/2025-MAI-Backend-E-Danilenko/wrk$ ./wrk -t12 -c400 -d30s http://127.0.0.1
+Running 30s test @ http://127.0.0.1
+  12 threads and 400 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     3.80ms    6.23ms  79.59ms   87.27%
+    Req/Sec    24.86k     5.65k  103.40k    71.75%
+  8923525 requests in 29.68s, 2.76GB read
+  Socket errors: connect 0, read 0, write 0, timeout 392
+  Non-2xx or 3xx responses: 8923525
+Requests/sec: 300668.86
+Transfer/sec:     95.20MB
