@@ -1,60 +1,30 @@
-# from django.http import JsonResponse
-# from django.views.decorators.http import require_http_methods
-
-# @require_http_methods(["GET", "POST"])
-# def profile(request):
-#     return JsonResponse({'message': 'This is the profile endpoint.'})
-
-# @require_http_methods(["GET", "POST"])
-# def product_list(request):
-#     return JsonResponse({'message': 'This is the product list endpoint.'})
-
-# @require_http_methods(["GET", "POST"])
-# def category_page(request):
-#     return JsonResponse({'message': 'This is the category page endpoint.'})
-
-
-from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from django.db.models import Q
 from .models import Pattern
-from django.views.decorators.http import require_http_methods
+from .serializers import PatternSerializer
 
-@require_http_methods(["GET"])
+@api_view(['GET'])
 def search(request):
     query = request.GET.get('q', '')
     if query:
         patterns = Pattern.objects.filter(
             Q(title__icontains=query) | Q(description__icontains=query)
         )
-        results = [{'title': pattern.title, 'description': pattern.description} for pattern in patterns]
-        return JsonResponse({'results': results})
-    return JsonResponse({'results': []})
+        serializer = PatternSerializer(patterns, many=True)
+        return Response(serializer.data)
+    return Response([])
 
-@require_http_methods(["GET"])
+@api_view(['GET'])
 def patterns_list(request):
-    patterns = Pattern.objects.all().values('title', 'description', 'price', 'difficulty_level')
-    return JsonResponse({'patterns': list(patterns)})
+    patterns = Pattern.objects.all()
+    serializer = PatternSerializer(patterns, many=True)
+    return Response(serializer.data)
 
-import json
-
-@require_http_methods(["POST"])
+@api_view(['POST'])
 def create_pattern(request):
-    data = json.loads(request.body)
-    title = data.get('title')
-    description = data.get('description')
-    price = data.get('price')
-    difficulty_level = data.get('difficulty_level')
-    author_id = data.get('author_id')
-    category_ids = data.get('category_ids', [])
-
-    if title and description and author_id:
-        pattern = Pattern.objects.create(
-            title=title,
-            description=description,
-            price=price,
-            difficulty_level=difficulty_level,
-            author_id=author_id
-        )
-        pattern.categories.set(category_ids)
-        return JsonResponse({'message': 'Pattern created successfully!'})
-    return JsonResponse({'error': 'Invalid data'}, status=400)
+    serializer = PatternSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=201)
+    return Response(serializer.errors, status=400)
