@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import sys  # Добавьте эту строку для импорта модуля sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,9 +83,12 @@ DATABASES = {
         'PASSWORD': 'pass', 
         'HOST': 'localhost',
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'test_mydatabase',
+            'MIGRATE': False,
+        },
     }
 }
-
 
 
 # Password validation
