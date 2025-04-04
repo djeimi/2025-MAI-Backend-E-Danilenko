@@ -27,3 +27,14 @@ class LRUCache:
         if key in self.cache:
             del self.cache[key]
             self.queue.remove(key)
+
+
+
+cache = LRUCache(100)
+cache.set('Jesse', 'Pinkman')
+cache.set('Walter', 'White')
+cache.set('Jesse', 'James')
+print(cache.get('Jesse')) # вернёт 'James'
+cache.rem('Walter')
+print(cache.get('Walter')) # вернёт ''
+
