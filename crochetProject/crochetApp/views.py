@@ -1,8 +1,9 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import generics
 from django.db.models import Q
-from .models import Pattern
-from .serializers import PatternSerializer
+from .models import Pattern, Category, Author
+from .serializers import PatternSerializer, CategorySerializer, AuthorSerializer
 
 @api_view(['GET'])
 def search(request):
@@ -28,3 +29,28 @@ def create_pattern(request):
         serializer.save()
         return Response(serializer.data, status=201)
     return Response(serializer.errors, status=400)
+
+# для стандартных операций CRUD (создание, чтение, обновление, удаление)
+class PatternListCreateView(generics.ListCreateAPIView):
+    queryset = Pattern.objects.all()
+    serializer_class = PatternSerializer
+
+class PatternDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Pattern.objects.all()
+    serializer_class = PatternSerializer
+    
+class CategoryListCreateView(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    
+class AuthorListCreateView(generics.ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+class AuthorDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
