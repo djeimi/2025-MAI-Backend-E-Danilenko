@@ -1,21 +1,20 @@
-(myenv) danilenko_e@LAPTOP-MVC9TPM6:~/2025-MAI-Backend-E-Danilenko/wrk$ ./wrk -t12 -c400 -d30s http://127.0.0.1
-Running 30s test @ http://127.0.0.1
-  12 threads and 400 connections
+(myenv) danilenko_e@LAPTOP-MVC9TPM6:~/2025-MAI-Backend-E-Danilenko$ wrk -t10 -c100 -d10s http://127.0.0.1:8000/static/admin/css/autocomplete.css
+Running 10s test @ http://127.0.0.1:8000/static/admin/css/autocomplete.css
+  10 threads and 100 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency    12.45ms    2.27ms  28.84ms   70.66%
-    Req/Sec     2.66k   484.51    10.99k    76.16%
-  954440 requests in 30.03s, 155.64MB read
-Requests/sec:  31778.01
-Transfer/sec:      5.18MB
-
-(myenv) danilenko_e@LAPTOP-MVC9TPM6:~/2025-MAI-Backend-E-Danilenko/wrk$ ./wrk -t12 -c400 -d30s http://127.0.0.1
-Running 30s test @ http://127.0.0.1
-  12 threads and 400 connections
+    Latency    36.22ms    2.03ms  56.46ms   93.94%
+    Req/Sec   267.91     62.66   303.00     85.71%
+  27780 requests in 9.10s, 253.14MB read
+  Socket errors: connect 0, read 0, write 0, timeout 400
+Requests/sec:   3052.36
+Transfer/sec:     27.81MB --gunicorn+djanga
+(myenv) danilenko_e@LAPTOP-MVC9TPM6:~/2025-MAI-Backend-E-Danilenko$ wrk -t10 -c100 -d10s http://127.0.0.1/static/admin/css/autocomplete.css
+Running 10s test @ http://127.0.0.1/static/admin/css/autocomplete.css
+  10 threads and 100 connections
   Thread Stats   Avg      Stdev     Max   +/- Stdev
-    Latency     3.80ms    6.23ms  79.59ms   87.27%
-    Req/Sec    24.86k     5.65k  103.40k    71.75%
-  8923525 requests in 29.68s, 2.76GB read
-  Socket errors: connect 0, read 0, write 0, timeout 392
-  Non-2xx or 3xx responses: 8923525
-Requests/sec: 300668.86
-Transfer/sec:     95.20MB
+    Latency   813.05us    1.92ms  27.98ms   91.99%
+    Req/Sec    38.02k     6.31k   47.31k    91.68%
+  3874801 requests in 9.54s, 34.04GB read
+  Socket errors: connect 0, read 0, write 0, timeout 162
+Requests/sec: 405979.02
+Transfer/sec:      3.57GB --nginx
