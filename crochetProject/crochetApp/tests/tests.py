@@ -1,6 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from ..models import Pattern, Author, Category
+from ..models import Pattern, Category
+from django.contrib.auth.models import User
+
 from django.contrib.auth.models import User
 
 class PatternViewsTests(TestCase):
@@ -11,10 +13,6 @@ class PatternViewsTests(TestCase):
         cls.user = User.objects.create_user(
             username='testuser',
             password='testpass123'
-        )
-        cls.author = Author.objects.create(
-            user=cls.user,  
-            bio="Author bio"
         )
         cls.category = Category.objects.create(name="Test Category")
         cls.pattern = Pattern.objects.create(
@@ -37,7 +35,7 @@ class PatternViewsTests(TestCase):
             "description": "New Description",
             "price": 15.00,
             "difficulty_level": "beginner",
-            "author": self.author.id,
+            "author": self.user.id,
             "categories": [self.category.id]
         }
         response = self.client.post(
@@ -67,5 +65,5 @@ class PatternViewsTests(TestCase):
             cursor.execute("SELECT * FROM auth_user")
             print("Users:", cursor.fetchall())
         print(f"Users: {User.objects.count()}")
-        print(f"Authors: {Author.objects.count()}")
+        print(f"Authors: {User.objects.count()}")
         print(f"Patterns: {Pattern.objects.count()}")

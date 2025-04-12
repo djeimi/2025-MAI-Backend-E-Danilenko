@@ -1,6 +1,6 @@
 from django.test import TestCase
-from crochetApp.models import Pattern, Author, Category
-from crochetApp.factories import AuthorFactory, CategoryFactory, PatternFactory
+from crochetApp.models import Pattern
+from crochetApp.factories import CategoryFactory, PatternFactory
 
 class PatternModelTests(TestCase):
     def test_create_pattern(self):

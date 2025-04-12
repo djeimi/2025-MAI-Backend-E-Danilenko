@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Pattern, Category, Author
+from .models import Pattern, Category
+from django.contrib.auth.models import User
 
 class PatternSerializer(serializers.ModelSerializer):
     categories = serializers.SlugRelatedField(
@@ -17,7 +18,7 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ['name']
 
-class AuthorSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Author
-        fields = ['user', 'bio']
+        model = User
+        fields = ['username']

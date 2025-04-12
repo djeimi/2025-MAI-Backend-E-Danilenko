@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from django.test import TestCase, Client
 from django.urls import reverse
-from ..models import Pattern, Author, Category
+from ..models import Pattern, Category
 from django.contrib.auth.models import User
 
 class MockTests(TestCase):
@@ -15,10 +15,6 @@ class MockTests(TestCase):
         cls.user = User.objects.create_user(
             username='testuser',
             password='testpass123'
-        )
-        cls.author = Author.objects.create(
-            user=cls.user,  
-            bio="Author bio"
         )
         cls.category = Category.objects.create(name="Test Category")
         cls.pattern = Pattern.objects.create(

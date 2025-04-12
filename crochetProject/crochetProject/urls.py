@@ -21,6 +21,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('crochetApp.urls'))
+    path('', include('crochetApp.urls')),
+    path('auth/login/github', include('social_django.urls', namespace='social')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

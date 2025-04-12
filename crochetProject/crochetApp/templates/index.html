@@ -1,0 +1,21 @@
+<!-- app/templates/home.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Auth Example</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>Привет, {{ user.username }}!</p>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+    {% else %}
+        <p>Вы не вошли.</p>
+        <a href="{% url 'social:begin' 'github' %}?next=/">Войти через GitHub</a>
+    {% endif %}
+</body>
+</html>
