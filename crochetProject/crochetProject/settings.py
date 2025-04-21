@@ -120,6 +120,10 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_GITHUB_KEY = 'Ov23liTsffTMu2lROC7y'
 SOCIAL_AUTH_GITHUB_SECRET = 'b861f8adee0b1e126f90d1e0e5e41a1d215f0471'
 
+CENTRIFUGO_API_KEY = "APbk6G0S_xO3kNk2leEKolnTHaS7EMT3yj4ZJFN2L-64rmYXYfNsFsDAvsoP7LH36LAbunWjwPeiLVPhy7wgTw"  # Должен совпадать с ключом в centrifugo.json
+CENTRIFUGO_SECRET_KEY = "YhcaqG5JuekXVDdUy1irfh-TX1wd5M6H6LoH3y9ESokFZl0uxhVU82tA8DuhSdXilwRaR-jqWVxOA8zSjJwAFw"  # Для JWT аутентификации (если используется)
+CENTRIFUGO_URL = "http://localhost:3000"
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 

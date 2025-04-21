@@ -1,14 +1,63 @@
-<!-- app/templates/home.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>GitHub Auth Example</title>
+    <script src="https://unpkg.com/centrifuge@5.0.0/dist/centrifuge.js"></script>
 </head>
 <body>
     {% if user.is_authenticated %}
         <p>Привет, {{ user.username }}!</p>
+        
+        <h2>Ваши схемы:</h2>
+        {% if user_patterns %}
+            <ul id="patterns-list">
+                {% for pattern in user_patterns %}
+                    <li>
+                        {{ pattern.title }} - {{ pattern.description }}
+                        (ID: {{ pattern.id }})
+                    </li>
+                {% endfor %}
+            </ul>
+            <script type="text/javascript">
+
+                const list = document.getElementById('patterns-list');
+
+                const centrifuge = new Centrifuge("ws://localhost:3000/connection/websocket", {
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkamVpbWkiLCJleHAiOjE3NDUwNTczOTEsImlhdCI6MTc0NDQ1MjU5MX0.JoSwPC1zSqXyJmls612IWA80CFCzFVdbn6ohcy3Hcm0"
+                });
+            
+                centrifuge.on('connecting', function (ctx) {
+                  console.log('connecting: ${ctx.code}, ${ctx.reason}');
+                }).on('connected', function (ctx) {
+                  console.log('connected over ${ctx.transport}');
+                }).on('disconnected', function (ctx) {
+                  console.log('disconnected: ${ctx.code}, ${ctx.reason}');
+                }).connect();
+            
+                const sub = centrifuge.newSubscription("{{user.username}}");
+            
+                sub.on('publication', function (ctx) {
+                    const pattern = ctx.data;
+
+                    if (list) {
+                        const item = document.createElement('li');
+                        item.textContent = `${pattern.title} - ${pattern.description} (ID: ${pattern.id})`;
+                        list.appendChild(item);
+                    }
+                //   document.title = ctx.data.value;
+                }).on('subscribing', function (ctx) {
+                  console.log('subscribing: ${ctx.code}, ${ctx.reason}');
+                }).on('subscribed', function (ctx) {
+                  console.log('subscribed', ctx);
+                }).on('unsubscribed', function (ctx) {
+                  console.log('unsubscribed: ${ctx.code}, ${ctx.reason}');
+                }).subscribe();
+            </script>
+        {% else %}
+            <p>У вас пока нет схем.</p>
+        {% endif %}
+        
         <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit">Выйти</button>

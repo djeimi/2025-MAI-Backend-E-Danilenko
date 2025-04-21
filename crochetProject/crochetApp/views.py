@@ -117,7 +117,16 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
 from django.shortcuts import render
 
 def home(request):
-    return render(request, 'index.html')
+    if request.user.is_authenticated:
+        user_patterns = Pattern.objects.filter(author=request.user)
+    else:
+        user_patterns = None
+    
+    context = {
+        'user_patterns': user_patterns,
+        'user_name': request.user.username
+    }
+    return render(request, 'index.html', context)
 
 def zone51(request):
     return render(request, 'area51.html')

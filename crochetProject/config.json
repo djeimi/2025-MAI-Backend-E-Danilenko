@@ -1,0 +1,25 @@
+{
+  "client": {
+    "token": {
+      "hmac_secret_key": "jFlG8n-5zRR-9551ikaAhrayboQuim7wBP9kmMpzvZUzb5NpScsQTnU809XTy1RuzCDGkd19fT0IfY6YOzNthw"
+    },
+    "allowed_origins": ["http://127.0.0.1:3000", "http://127.0.0.1:8000", "http://127.0.0.1", "http://localhost:3000", "http://localhost:8000", "http://localhost"]
+  },
+  "admin": {
+    "enabled": false,
+    "password": "eG2s341nGUg24SAOcVuEFA",
+    "secret": "YhcaqG5JuekXVDdUy1irfh-TX1wd5M6H6LoH3y9ESokFZl0uxhVU82tA8DuhSdXilwRaR-jqWVxOA8zSjJwAFw"
+  },
+  "http_api": {
+    "key": "APbk6G0S_xO3kNk2leEKolnTHaS7EMT3yj4ZJFN2L-64rmYXYfNsFsDAvsoP7LH36LAbunWjwPeiLVPhy7wgTw"
+  },
+  "http_server" : {
+    "port": "3000",
+    "address": "127.0.0.1"
+  },
+  "channel": {
+    "without_namespace": {
+      "allow_subscribe_for_client": true
+    }
+  }
+}
