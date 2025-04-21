@@ -81,10 +81,10 @@ WSGI_APPLICATION = 'crochetProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'crochetdb',
-        'USER': 'eldan',
-        'PASSWORD': 'pass', 
-        'HOST': 'localhost',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'mysecretpassword', 
+        'HOST': 'db',
         'PORT': '5432',
         'TEST': {
             'NAME': 'test_mydatabase',
