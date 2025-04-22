@@ -23,8 +23,8 @@
 
                 const list = document.getElementById('patterns-list');
 
-                const centrifuge = new Centrifuge("ws://localhost:3000/connection/websocket", {
-                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkamVpbWkiLCJleHAiOjE3NDUwNTczOTEsImlhdCI6MTc0NDQ1MjU5MX0.JoSwPC1zSqXyJmls612IWA80CFCzFVdbn6ohcy3Hcm0"
+                const centrifuge = new Centrifuge(`ws://${window.location.host}/connection/websocket`, {
+                  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MiJ9.O61kP6X2tTcRLNk7npYdQSl12MIcGfPgc-pfgNaJoy8"
                 });
             
                 centrifuge.on('connecting', function (ctx) {

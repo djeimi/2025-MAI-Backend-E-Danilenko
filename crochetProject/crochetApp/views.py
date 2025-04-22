@@ -54,23 +54,64 @@ class PatternListCreateView(generics.ListCreateAPIView):
         return queryset
 
 class PatternDetailView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = PatternSerializer
-
-    def get_queryset(self):
+    def get(self, request, *args, **kwargs):
         pk = self.kwargs['pk']
-        return Pattern.objects.filter(id=pk)
+        if not self.request.user.is_anonymous:
+            queryset = Pattern.objects.filter(author=self.request.user)
+        else:
+            queryset = Pattern.objects.all()
+        try:
+            serializer = PatternSerializer(queryset.order_by('id')[pk-1])
+            return Response(serializer.data)
+        except:
+            return Response(
+                {"detail": f"Pattern with id {pk} not found"},
+                status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE
+            )   
 
     def delete(self, request, pk):
-        pattern = Pattern.objects.get(id=pk)
+        pk = self.kwargs['pk']
+        if not self.request.user.is_anonymous:
+            queryset = Pattern.objects.filter(author=self.request.user)
+        else:
+            raise PermissionDenied("You cannot delete anything.")
+
+        try:
+            pattern = queryset.order_by('id')[pk-1]
+        except:
+            return Response(
+                {"detail": f"Pattern with id {pk} not found"},
+                status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE
+            )   
+        
         if pattern is not None:
-            if self.request.user == pattern.author:
-                pattern.delete()
-                return Response({"detail": "Pattern {pattern.title} succesfully is deleted"}, status=status.HTTP_200_OK)
-            else:
-                raise PermissionDenied("You cannot delete this pattern.")
+            pattern.delete()
+            return Response({"detail": f"Pattern {pattern.title} succesfully is deleted"}, status=status.HTTP_200_OK)
         else:
             raise PermissionDenied("You cannot delete this pattern, it doesn't exist.")
     
+    def put(self, request, *args, **kwargs):
+        if not self.request.user.is_anonymous:
+            queryset = Pattern.objects.filter(author=self.request.user)
+        else:
+            queryset = Pattern.objects.all()
+
+        pk = kwargs.get('pk')
+        try:
+            serializer = PatternSerializer(queryset.order_by('id')[pk-1], data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(
+                {"detail": f"Pattern with id {pk} not found"},
+                status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE
+            )   
+
+    def patch(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)
+
 class CategoryListCreateView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -90,13 +131,47 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
             )    
     
     def delete(self, request, *args, **kwargs):
-        instance = self.get()
-        self.perform_destroy(instance)
+        pk = self.kwargs['pk']
+        try:
+            instance = Category.objects.only('name').order_by('id')[pk-1]
+        except:
+            return Response(
+                {"detail": f"Category with id {pk} not found"},
+                status=status.HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE
+            )    
+
+        if self.request.user.is_anonymous:
+            raise PermissionDenied("You cannot delete anything.")
+
+        instance.delete()
         return Response(
             {"detail": f"Category {instance.name} successfully deleted"},
             status=status.HTTP_200_OK
         )
     
+    def put(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            
+            serializer = self.get_serializer(instance, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+            
+        except Exception as e:
+            return Response(
+                {"detail": str(e)},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except PermissionDenied as e:
+            return Response(
+                {"detail": str(e)},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+    def patch(self, request, *args, **kwargs):
+        return self.put(request, *args, **kwargs)
+
 class UserListCreateView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer

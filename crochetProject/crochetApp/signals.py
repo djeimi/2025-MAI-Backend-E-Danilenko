@@ -16,7 +16,7 @@ def send_update_to_centrifugo(sender, instance, created, **kwargs):
             }
         }
 
-        url = "http://localhost:3000/api/publish"
+        url = "http://centrifugo:3000/api/publish"
         headers = {
             "Content-Type": "application/json",
             "X-API-Key":  settings.CENTRIFUGO_API_KEY

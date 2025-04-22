@@ -3,7 +3,7 @@
     "token": {
       "hmac_secret_key": "jFlG8n-5zRR-9551ikaAhrayboQuim7wBP9kmMpzvZUzb5NpScsQTnU809XTy1RuzCDGkd19fT0IfY6YOzNthw"
     },
-    "allowed_origins": ["http://127.0.0.1:3000", "http://127.0.0.1:8000", "http://127.0.0.1", "http://localhost:3000", "http://localhost:8000", "http://localhost"]
+    "allowed_origins": ["http://localhost", "*"]
   },
   "admin": {
     "enabled": false,
@@ -15,11 +15,12 @@
   },
   "http_server" : {
     "port": "3000",
-    "address": "127.0.0.1"
+    "address": "0.0.0.0"
   },
   "channel": {
     "without_namespace": {
       "allow_subscribe_for_client": true
     }
-  }
+  },
+  "health.enabled": true
 }

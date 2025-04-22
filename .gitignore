@@ -1,6 +1,7 @@
 *.pyc
 *.aux
 *.log
+.env
 pgdata
 myenv
 __pycache__

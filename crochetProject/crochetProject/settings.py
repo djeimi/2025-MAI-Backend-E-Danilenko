@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import sys  # Добавьте эту строку для импорта модуля sys
+import os
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,10 +83,10 @@ WSGI_APPLICATION = 'crochetProject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'mysecretpassword', 
-        'HOST': 'db',
+        'NAME':  os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'db', 
         'PORT': '5432',
         'TEST': {
             'NAME': 'test_mydatabase',
@@ -122,7 +124,7 @@ SOCIAL_AUTH_GITHUB_SECRET = 'b861f8adee0b1e126f90d1e0e5e41a1d215f0471'
 
 CENTRIFUGO_API_KEY = "APbk6G0S_xO3kNk2leEKolnTHaS7EMT3yj4ZJFN2L-64rmYXYfNsFsDAvsoP7LH36LAbunWjwPeiLVPhy7wgTw"  # Должен совпадать с ключом в centrifugo.json
 CENTRIFUGO_SECRET_KEY = "YhcaqG5JuekXVDdUy1irfh-TX1wd5M6H6LoH3y9ESokFZl0uxhVU82tA8DuhSdXilwRaR-jqWVxOA8zSjJwAFw"  # Для JWT аутентификации (если используется)
-CENTRIFUGO_URL = "http://localhost:3000"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -140,7 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = "/home/danilenko_e/2025-MAI-Backend-E-Danilenko/crochetProject/static"
+STATIC_ROOT = "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
